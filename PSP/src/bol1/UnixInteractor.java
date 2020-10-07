@@ -17,7 +17,8 @@ public class UnixInteractor {
         try {
             Process shell = pb.start();
             InputStream is = shell.getInputStream();
-            BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+           // BufferedReader br = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            BufferedReader br = new BufferedReader(new InputStreamReader(is, "Cp850"));
 
             System.out.println("La salida del proceso hijo " + Arrays.toString(command) + ":");
             while ((line = br.readLine()) != null) {
