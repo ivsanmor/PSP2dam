@@ -1,4 +1,4 @@
-package ejercicio5;
+package holaMundo;
 
 public class HolaMundo {
 

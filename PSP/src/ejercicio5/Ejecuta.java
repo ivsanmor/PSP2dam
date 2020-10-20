@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class Ejecuta {
 
 	public static void main(String[] command) {
+		//cmd /c "java -jar C:\Users\VersusPC\git\PSP2dam\PSP\Ej5.jar"
         // TODO Auto-generated method stub
         String line;
         ProcessBuilder pb = new ProcessBuilder(command);
