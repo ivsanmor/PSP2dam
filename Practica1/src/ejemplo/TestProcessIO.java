@@ -19,13 +19,11 @@ public class TestProcessIO {
 	}
 
 	public static void main(String[] args) throws IOException {
-		ProcessBuilder builder = new ProcessBuilder("cmd.exe"); //definimos el shell de windows como proceso a ejecutar
+		ProcessBuilder builder = new ProcessBuilder("java","-jar",""); //definimos el shell de windows como proceso a ejecutar
 		builder.redirectErrorStream(true); //redirige el buffer de error a la salida estándar
 		Process process = builder.start();
 		InputStream out = process.getInputStream(); //configuramos la salida del proceso hijo
 		OutputStream in = process.getOutputStream(); //configuramos la entrada del proceso hijo
-		Scanner tec = new Scanner(System.in);
-		String respuesta = null;
 
 		byte[] buffer = new byte[4000]; //buffer de comunicación entre procesos
 		while (isAlive(process)) {
