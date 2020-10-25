@@ -1,12 +1,22 @@
 package ejemplo;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Scanner;
 
-public class TestProcessIO {
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TestProcessIO.
+ */
+public class ProcesoPadre {
 
+	/**
+	 * Comprueba si el proceso esta activo
+	 *
+	 * @param p el proceso
+	 * @return true, si esta activo
+	 */
 	public static boolean isAlive(Process p) {
 		//si el proceso hijo ha terminado devuelve falso, si no ha terminado lanza una excepción y devuelve true
 		try {
@@ -17,11 +27,34 @@ public class TestProcessIO {
 			return true;
 		}
 	}
+	
+	/**
+	 * Run process.
+	 * Es el metodo que compilña el proceso hijo
+	 *
+	 * @param command el proceso hijo
+	 * @throws InterruptedException the interrupted exception
+	 */
+	private static void runProcess(String command) throws InterruptedException{
+		Process pro;
+		try {
+			pro = Runtime.getRuntime().exec(command);
+			pro.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	
+	}
 
-	public static void main(String[] args) throws IOException {
-		ProcessBuilder builder = new ProcessBuilder("java","-jar",""); //definimos el shell de windows como proceso a ejecutar
-		builder.redirectErrorStream(true); //redirige el buffer de error a la salida estándar
-		Process process = builder.start();
+	/**
+	 * El metodo principal en el que se establece la comunicacion con el proceso hijo 
+	 *
+	 * @param args los argumentos
+	 * @throws Exception the exception
+	 */
+	public static void main(String[] args) throws Exception {
+		runProcess("javac -cp src src/sistemaVideoclub/SistemaVideoClub.java");
+        Process process = Runtime.getRuntime().exec("java -cp src sistemaVideoclub/SistemaVideoClub");
 		InputStream out = process.getInputStream(); //configuramos la salida del proceso hijo
 		OutputStream in = process.getOutputStream(); //configuramos la entrada del proceso hijo
 
