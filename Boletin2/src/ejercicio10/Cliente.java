@@ -1,34 +1,56 @@
 package ejercicio10;
 
+import java.util.Random;
 
-public class Cliente extends Thread{
-	String nombre;
+public class Cliente implements Runnable {
+	private Caja caja; //Caja donde pagará el cliente
+	private int numCliente;
+	private Random r = new Random();
+	private int turno; //Turno asignado en la caja
+	Thread t;
 
-	public Cliente(String nombre) {
-		this.nombre=nombre;
+	public Cliente(int num) {
+		this.numCliente = num;
+		t = new Thread(this);
+		t.start();
 	}
-	
+
+	@Override
 	public void run() {
-		System.out.println("Entra en el supermercado el cliente " + nombre);
-		int rnd=(int)(Math.random()*1000);
+		System.out.println("Soy el cliente " + numCliente + ", entro al super");
+		int espera = r.nextInt(100); 
+		//El cliente compra durante un tiempo aleatorio
 		try {
-			System.out.println(nombre+ " pasa " + rnd + " milisegundos comprando");
-			Thread.sleep(rnd);
+			Thread.sleep(espera);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			// Restore interrupted state...
+		    Thread.currentThread().interrupt();
 		}
-		escogeCaja(SuperMarket.seleccionaCaja());
-			
+		//El cliente pide una caja cuando terminade comprar
+		escogerCaja();
+		//El ciente entra en la caja asignada
+		entrarACaja();
 	}
 	
-	private synchronized void escogeCaja(Caja c) {
-		
-		int pago = (int)(Math.random()*100);
-		
-		System.out.println("El cliente "+nombre+ " escoge la caja " + (c.getNum()));
-		
-		c.factura(pago);
+	//Método creado para poder acceder al hilo y ejecutar el método join en el programa principal
+	public Thread getThread() {
+		return t;
+	}
+
+	//Método para pasar por caja una vez ha comprado
+	public void entrarACaja() {
+		int pago = r.nextInt(50);
+		int espera = r.nextInt(100);
+		caja.entrar(this.numCliente, pago, espera, this.turno);
+
+	}
+
+	//Método para escoger una caja aleatoria
+	private void escogerCaja() {
+		caja = SuperMarket.asignarCaja();
+		turno = caja.getTurno();
+		System.out.println("Soy el cliente " + numCliente + " elijo la caja " + caja.getNumCaja() + " con turno " + turno);
 	}
 
 }
