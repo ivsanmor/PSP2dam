@@ -1,7 +1,16 @@
 package practica;
 
+
+/**
+ * Clase mesa 
+ */
 public class Mesa {
 
+	/**
+	 * Metodo Main
+	 *
+	 * @param args los argumentos
+	 */
 	public static void main(String[] args) {
 		
 		Tarjeta [] tarjetas = new Tarjeta[5];
@@ -21,7 +30,12 @@ public class Mesa {
 		
 	}
 	
-	public synchronized static void showMessage(String s) {
+	/**
+	 * Metodo para sincronizar los system.out
+	 *
+	 * @param s el texto 
+	 */
+	public static synchronized void showMessage(String s) {
 		System.out.println(s);
 	}
 
