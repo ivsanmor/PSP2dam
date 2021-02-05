@@ -1,0 +1,69 @@
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.videoclub.com/xml/estante"
+targetNamespace="http://www.videoclub.com/xml/estante" elementFormDefault="qualified">
+ 
+    <xs:element name="PeliculaDetailsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+ 
+    <xs:element name="PeliculaDetailsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Pelicula" type="tns:Pelicula"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="DirectorDetailsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="name" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+ 
+    <xs:element name="DirectorDetailsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Director" type="tns:Director"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    
+    <xs:element name="FilmografiaDetailsRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="nombre" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+ 
+    <xs:element name="FilmografiaDetailsResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="Peliculas" maxOccurs="unbounded" type="tns:Pelicula"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+ 
+    <xs:complexType name="Pelicula">
+        <xs:sequence>
+            <xs:element name="nombre" type="xs:string"/>
+            <xs:element name="duracion" type="xs:int"/>
+            <xs:element name="genero" type="xs:string"/>
+            <xs:element name="Director" type="tns:Director"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="Director">
+        <xs:sequence>
+            <xs:element name="nombre" type="xs:string"/>
+            <xs:element name="edad" type="xs:int"/>
+            <xs:element name="nacionalidad" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+     
+</xs:schema>
