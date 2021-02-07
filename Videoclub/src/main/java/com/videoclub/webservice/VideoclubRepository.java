@@ -13,17 +13,31 @@ import com.videoclub.xml.estante.Director;
 import com.videoclub.xml.estante.Pelicula;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VideoclubRepository.
+ */
 @Component
 public class VideoclubRepository {
+    
+    /** La constante que guarda todas las peliculas*/
     private static final Map<String, Pelicula> peliculas = new HashMap<>();
+    
+    /** La constante que guarda todos los directores */
     private static final Map<String, Director> directores = new HashMap<>();
+    
+    /** La constante que guarda las peliculas de cada director */
     private static final Map<String, ArrayList<Pelicula>> filmografia = new HashMap<>();
     
+    /**
+     * Inits the data.
+     */
     @PostConstruct
     public void initData() {
     	
     	ArrayList<Pelicula> pelis = new ArrayList<>();
     	
+    	//Primer director con sus peliculas
     	Director director = new Director();
     	director.setNombre("Quentin Tarantino");
     	director.setEdad(57);
@@ -49,6 +63,7 @@ public class VideoclubRepository {
         
         filmografia.put(director.getNombre(), pelis);
         
+        //Segundo director
         pelis = new ArrayList<>();
         director = new Director();
     	director.setNombre("Christopher Nolan");
@@ -74,6 +89,7 @@ public class VideoclubRepository {
         
         filmografia.put(director.getNombre(), pelis);
         
+        //Tercer director
         pelis = new ArrayList<>();
         director = new Director();
     	director.setNombre("Steven Spielberg");
@@ -101,15 +117,34 @@ public class VideoclubRepository {
          
     }
  
+    /**
+     * Find pelicula, devuelve la película con el nombre pasado por parámetros
+     *
+     * @param name el nombre de la película
+     * @return the pelicula
+     */
     public Pelicula findPelicula(String name) {
         Assert.notNull(name, "El nombre de la película no puede ser nulo");
         return peliculas.get(name);
     }
     
+    /**
+     * Find director, devuelve el director con el nombre pasado por parámetros
+     *
+     * @param name el nombre del director
+     * @return the director
+     */
     public Director findDirector(String name) {
         Assert.notNull(name, "El nombre del director no puede ser nulo");
         return directores.get(name);
     }
+    
+    /**
+     * Find filmografia, devuelve las peliculas del director con el nombre pasado por parámetros
+     *
+     * @param name el nombre del director
+     * @return the su filmografía
+     */
     public ArrayList<Pelicula> findFilmografia(String name) {
         Assert.notNull(name, "El nombre del director no puede ser nulo");
         return filmografia.get(name);

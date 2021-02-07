@@ -17,18 +17,37 @@ import com.videoclub.xml.estante.PeliculaDetailsRequest;
 import com.videoclub.xml.estante.PeliculaDetailsResponse;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VideoclubEndpoint.
+ */
 @Endpoint
 public class VideoclubEndpoint {
 	
+	/** The Constant NAMESPACE_URI. */
 	private static final String NAMESPACE_URI = "http://www.videoclub.com/xml/estante";
 	 
+	/** The Videoclub repository. */
 	private VideoclubRepository VideoclubRepository;
  
+    /**
+     * Instantiates a new videoclub endpoint.
+     *
+     * @param VideoclubRepository the videoclub repository
+     */
     @Autowired
     public VideoclubEndpoint(VideoclubRepository VideoclubRepository) {
         this.VideoclubRepository=VideoclubRepository;
     }
  
+    /**
+     * Gets the pelicula. 
+     * El servicio que se encarga de recibir el nombre de una película 
+     * y devuelve la película con todos sus datos
+     *
+     * @param request the request
+     * @return the pelicula
+     */
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "PeliculaDetailsRequest")
     @ResponsePayload
     public PeliculaDetailsResponse getPelicula(@RequestPayload PeliculaDetailsRequest request) {
@@ -38,6 +57,14 @@ public class VideoclubEndpoint {
         return response;
     }
     
+    /**
+     * Gets the director.
+     *El servicio que se encarga de recibir el nombre de un director
+     *y devuelve el director con todos sus datos
+     *
+     * @param request the request
+     * @return the director
+     */
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "DirectorDetailsRequest")
     @ResponsePayload
     public DirectorDetailsResponse getDirector(@RequestPayload DirectorDetailsRequest request) {
@@ -47,6 +74,13 @@ public class VideoclubEndpoint {
         return response;
     }
     
+    /**
+     * Gets the filmografia.
+     *El servicio que se encarga de recibir el nombre de un director
+     *y devuelve todas las peliculas de ese director
+     * @param request the request
+     * @return the filmografia
+     */
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "FilmografiaDetailsRequest")
     @ResponsePayload
     public FilmografiaDetailsResponse getFilmografia(@RequestPayload FilmografiaDetailsRequest request) {
