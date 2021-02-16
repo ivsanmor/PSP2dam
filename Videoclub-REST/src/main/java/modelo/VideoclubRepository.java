@@ -27,8 +27,8 @@ public class VideoclubRepository {
     /**
      * Inits the data.
      */
-    @PostConstruct
-    public void initData() {
+    
+    public VideoclubRepository() {
     	
     	ArrayList<Pelicula> pelis = new ArrayList<>();
     	
