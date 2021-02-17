@@ -11,17 +11,21 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RestController;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VideoclubRepository.
+ */
 @RestController
 public class VideoclubRepository {
 	
 	
-	/** La constante que guarda todas las peliculas*/
+	/**  La constante que guarda todas las peliculas. */
     public static final Map<String, Pelicula> peliculas = new HashMap<>();
     
-    /** La constante que guarda todos los directores */
+    /**  La constante que guarda todos los directores. */
     public static final Map<String, Director> directores = new HashMap<>();
     
-    /** La constante que guarda las peliculas de cada director */
+    /**  La constante que guarda las peliculas de cada director. */
     public static final Map<String, ArrayList<Pelicula>> filmografia = new HashMap<>();
     
     /**
@@ -122,7 +126,7 @@ public class VideoclubRepository {
     }
  
     /**
-     * Find pelicula, devuelve la película con el nombre pasado por parámetros
+     * Find pelicula, devuelve la película con el nombre pasado por parámetros.
      *
      * @param name el nombre de la película
      * @return the pelicula
@@ -133,7 +137,7 @@ public class VideoclubRepository {
     }
     
     /**
-     * Find director, devuelve el director con el nombre pasado por parámetros
+     * Find director, devuelve el director con el nombre pasado por parámetros.
      *
      * @param name el nombre del director
      * @return the director
@@ -144,7 +148,7 @@ public class VideoclubRepository {
     }
     
     /**
-     * Find filmografia, devuelve las peliculas del director con el nombre pasado por parámetros
+     * Find filmografia, devuelve las peliculas del director con el nombre pasado por parámetros.
      *
      * @param name el nombre del director
      * @return the su filmografía
@@ -154,38 +158,88 @@ public class VideoclubRepository {
         return filmografia.get(name);
     }
     
+    /**
+     * Gets the peliculas. Devuelve todas las películas
+     *
+     * @return the peliculas
+     */
     public Collection<Pelicula> getPeliculas() {
     	return peliculas.values();
     }
     
+    /**
+     * Gets the pelicula. Devuelve la película con el id pasado por parámetros
+     *
+     * @param id the id
+     * @return the pelicula
+     */
     public Pelicula getPelicula(String id) {
     	return peliculas.get(id);
     }
     
+    /**
+     * Removes the pelicula. Borra la película con el id pasado por parámetros
+     *
+     * @param id the id
+     */
     public void removePelicula(String id) {
     	peliculas.remove(id);
     }
     
+    /**
+     * Put pelicula. Añade una película
+     *
+     * @param id the id
+     * @param pelicula the pelicula
+     */
     public void putPelicula(String id, Pelicula pelicula) {
     	peliculas.put(id, pelicula);
     }
     
+    /**
+     * Gets the directores. Devuelve todos los directores.
+     *
+     * @return the directores
+     */
     public Collection<Director> getDirectores() {
     	return directores.values();
     }
     
+    /**
+     * Gets the director. Devuelve el director con el id pasado por parámetros
+     *
+     * @param id the id
+     * @return the director
+     */
     public Director getDirector(String id) {
     	return directores.get(id);
     }
     
+    /**
+     * Removes the director. Borra el director con el id pasado por parámetros
+     *
+     * @param id the id
+     */
     public void removeDirector(String id) {
     	directores.remove(id);
     }
     
+    /**
+     * Put director. Añade un director.
+     *
+     * @param id the id
+     * @param director the director
+     */
     public void putDirector(String id, Director director) {
     	directores.put(id, director);
     }
     
+    /**
+     * Gets the filmografia. Devuelve todas las películas de un director.
+     *
+     * @param id the id
+     * @return the filmografia
+     */
     public Collection<Pelicula> getFilmografia(String id){
     	return filmografia.get(id);
     }
