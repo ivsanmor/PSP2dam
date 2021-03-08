@@ -21,7 +21,27 @@ public class Pelicula {
 	/** The director. */
 	private Director director;
 	
+	/** The plataforma. */
+	private Plataforma plataforma;
 	
+	/**
+	 * Gets the plataforma.
+	 *
+	 * @return the plataforma
+	 */
+	public Plataforma getPlataforma() {
+		return plataforma;
+	}
+
+	/**
+	 * Sets the plataforma.
+	 *
+	 * @param plataforma the new plataforma
+	 */
+	public void setPlataforma(Plataforma plataforma) {
+		this.plataforma = plataforma;
+	}
+
 	/**
 	 * Gets the id pelicula.
 	 *

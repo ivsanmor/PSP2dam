@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
 
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +27,8 @@ public class VideoclubRepository {
     /**  La constante que guarda las peliculas de cada director. */
     public static final Map<String, ArrayList<Pelicula>> filmografia = new HashMap<>();
     
+    public static final Map<String, Plataforma> plataformas = new HashMap<>();
+    
     /**
      * Inits the data.
      */
@@ -35,6 +36,25 @@ public class VideoclubRepository {
     public VideoclubRepository() {
     	
     	ArrayList<Pelicula> pelis = new ArrayList<>();
+    	//Creo todas las plataformas de visualizado
+    	Plataforma netflix = new Plataforma();
+    	netflix.setId("1");
+    	netflix.setNombre("Netflix");
+    	netflix.setPrecio(10);
+    	netflix.setAno(1997);
+    	Plataforma amazon = new Plataforma();
+    	amazon.setId("2");
+    	amazon.setNombre("Amazon");
+    	amazon.setPrecio(8);
+    	amazon.setAno(1994);
+    	Plataforma hbo = new Plataforma();
+    	hbo.setId("3");
+    	hbo.setNombre("HBO");
+    	hbo.setPrecio(12);
+    	hbo.setAno(1972);
+    	plataformas.put(netflix.getId(), netflix);
+    	plataformas.put(amazon.getId(), amazon);
+    	plataformas.put(hbo.getId(), hbo);
     	
     	//Primer director con sus peliculas
     	Director director = new Director();
@@ -51,6 +71,7 @@ public class VideoclubRepository {
         pelicula.setDuracion(153);
         pelicula.setDirector(director);
         pelicula.setGenero("Drama");
+        pelicula.setPlataforma(netflix);
         peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
@@ -60,6 +81,7 @@ public class VideoclubRepository {
         pelicula.setDuracion(170);
         pelicula.setDirector(director);
         pelicula.setGenero("Oeste");
+        pelicula.setPlataforma(amazon);
         peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
@@ -80,6 +102,7 @@ public class VideoclubRepository {
         pelicula.setDuracion(150);
         pelicula.setDirector(director);
         pelicula.setGenero("Thriller");
+        pelicula.setPlataforma(hbo);
         peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
@@ -89,6 +112,7 @@ public class VideoclubRepository {
         pelicula.setDuracion(148);
         pelicula.setDirector(director);
         pelicula.setGenero("Drama");
+        pelicula.setPlataforma(netflix);
         peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
@@ -109,6 +133,7 @@ public class VideoclubRepository {
         pelicula.setDuracion(195);
         pelicula.setDirector(director);
         pelicula.setGenero("Drama");
+        pelicula.setPlataforma(amazon);
         peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
@@ -118,6 +143,7 @@ public class VideoclubRepository {
         pelicula.setDuracion(127);
         pelicula.setDirector(director);
         pelicula.setGenero("Aventura");
+        pelicula.setPlataforma(hbo);
         peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
@@ -156,6 +182,44 @@ public class VideoclubRepository {
     public ArrayList<Pelicula> findFilmografia(String name) {
         Assert.notNull(name, "El nombre del director no puede ser nulo");
         return filmografia.get(name);
+    }
+    
+    /**
+     * Gets the plataformas.
+     *
+     * @return the plataformas
+     */
+    public Collection<Plataforma> getPlataformas(){
+    	return plataformas.values();
+    }
+    
+    /**
+     * Gets the plataforma.
+     *
+     * @param id the id
+     * @return the plataforma
+     */
+    public Plataforma getPlataforma(String id) {
+    	return plataformas.get(id);
+    }
+    
+    /**
+     * Removes the plataforma. Borra la plataforma con el id pasado por parámetros
+     *
+     * @param id the id
+     */
+    public void removePlataforma(String id) {
+    	plataformas.remove(id);
+    }
+    
+    /**
+     * Put plataforma. Añade una plataforma
+     *
+     * @param id the id
+     * @param plataforma the plataforma
+     */
+    public void putPlataforma(String id, Plataforma plataforma) {
+    	plataformas.put(id, plataforma);
     }
     
     /**
@@ -231,6 +295,7 @@ public class VideoclubRepository {
      * @param director the director
      */
     public void putDirector(String id, Director director) {
+    	
     	directores.put(id, director);
     }
     
