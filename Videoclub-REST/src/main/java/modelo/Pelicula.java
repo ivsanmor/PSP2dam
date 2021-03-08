@@ -18,11 +18,25 @@ public class Pelicula {
 	/** The genero. */
 	private String genero;
 	
-	/** The director. */
-	private Director director;
 	
 	/** The plataforma. */
 	private Plataforma plataforma;
+	
+	/**
+	 * Instantiates a new pelicula.
+	 */
+	public Pelicula() {
+		
+	}
+	
+	/**
+	 * Instantiates a new pelicula.
+	 *
+	 * @param id the id
+	 */
+	public Pelicula (String id) {
+		this.id=id;
+	}
 	
 	/**
 	 * Gets the plataforma.
@@ -115,22 +129,16 @@ public class Pelicula {
 	}
 	
 	/**
-	 * Gets the director.
+	 * Equals.
 	 *
-	 * @return the director
+	 * @param o the o
+	 * @return true, if successful
 	 */
-	public Director getDirector() {
-		return director;
+	public boolean equals(Object o) {
+		return this.id.equals(((Pelicula) o).getIdPelicula());
 	}
 	
-	/**
-	 * Sets the director.
-	 *
-	 * @param director the new director
-	 */
-	public void setDirector(Director director) {
-		this.director = director;
-	}
+
 	
 	
 

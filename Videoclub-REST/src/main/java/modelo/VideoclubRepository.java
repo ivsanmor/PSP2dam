@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class VideoclubRepository {
 	
 	
-	/**  La constante que guarda todas las peliculas. */
-    public static final Map<String, Pelicula> peliculas = new HashMap<>();
+	/**  La constante que guarda todas las peliculas. 
+    public static final Map<String, Pelicula> peliculas = new HashMap<>();*/
     
     /**  La constante que guarda todos los directores. */
     public static final Map<String, Director> directores = new HashMap<>();
@@ -27,6 +27,7 @@ public class VideoclubRepository {
     /**  La constante que guarda las peliculas de cada director. */
     public static final Map<String, ArrayList<Pelicula>> filmografia = new HashMap<>();
     
+    /** The Constant plataformas. */
     public static final Map<String, Plataforma> plataformas = new HashMap<>();
     
     /**
@@ -69,20 +70,16 @@ public class VideoclubRepository {
         pelicula.setIdPelicula("1");
         pelicula.setNombre("Malditos Bastardos");
         pelicula.setDuracion(153);
-        pelicula.setDirector(director);
         pelicula.setGenero("Drama");
         pelicula.setPlataforma(netflix);
-        peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
         pelicula = new Pelicula();
         pelicula.setIdPelicula("2");
         pelicula.setNombre("Django Desencadenado");
         pelicula.setDuracion(170);
-        pelicula.setDirector(director);
         pelicula.setGenero("Oeste");
         pelicula.setPlataforma(amazon);
-        peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
         filmografia.put(director.getId(), pelis);
@@ -100,20 +97,16 @@ public class VideoclubRepository {
         pelicula.setIdPelicula("3");
         pelicula.setNombre("Tenet");
         pelicula.setDuracion(150);
-        pelicula.setDirector(director);
         pelicula.setGenero("Thriller");
         pelicula.setPlataforma(hbo);
-        peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
         pelicula = new Pelicula();
         pelicula.setIdPelicula("4");
         pelicula.setNombre("Origen");
         pelicula.setDuracion(148);
-        pelicula.setDirector(director);
         pelicula.setGenero("Drama");
         pelicula.setPlataforma(netflix);
-        peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
         filmografia.put(director.getId(), pelis);
@@ -131,36 +124,23 @@ public class VideoclubRepository {
         pelicula.setIdPelicula("5");
         pelicula.setNombre("La lista de Schindler");
         pelicula.setDuracion(195);
-        pelicula.setDirector(director);
         pelicula.setGenero("Drama");
         pelicula.setPlataforma(amazon);
-        peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
         pelicula = new Pelicula();
         pelicula.setIdPelicula("6");
         pelicula.setNombre("Parque Jurásico");
         pelicula.setDuracion(127);
-        pelicula.setDirector(director);
         pelicula.setGenero("Aventura");
         pelicula.setPlataforma(hbo);
-        peliculas.put(pelicula.getIdPelicula(), pelicula);
         pelis.add(pelicula);
         
         filmografia.put(director.getId(), pelis);
          
     }
  
-    /**
-     * Find pelicula, devuelve la película con el nombre pasado por parámetros.
-     *
-     * @param name el nombre de la película
-     * @return the pelicula
-     */
-    public Pelicula findPelicula(String name) {
-        Assert.notNull(name, "El nombre de la película no puede ser nulo");
-        return peliculas.get(name);
-    }
+
     
     /**
      * Find director, devuelve el director con el nombre pasado por parámetros.
@@ -227,8 +207,8 @@ public class VideoclubRepository {
      *
      * @return the peliculas
      */
-    public Collection<Pelicula> getPeliculas() {
-    	return peliculas.values();
+    public Collection<Pelicula> getPeliculas(String id) {
+    	return filmografia.get(id);
     }
     
     /**
@@ -237,8 +217,11 @@ public class VideoclubRepository {
      * @param id the id
      * @return the pelicula
      */
-    public Pelicula getPelicula(String id) {
-    	return peliculas.get(id);
+    public Pelicula getPelicula(String idDir, String idPel) {
+    	if (filmografia.containsKey(idDir) && filmografia.get(idDir).contains(new Pelicula(idPel))) {
+    		return filmografia.get(idDir).get(filmografia.get(idDir).indexOf(new Pelicula(idPel)));
+    	}
+    	return null;
     }
     
     /**
@@ -246,8 +229,8 @@ public class VideoclubRepository {
      *
      * @param id the id
      */
-    public void removePelicula(String id) {
-    	peliculas.remove(id);
+    public void removePelicula(String idDir, String idPel) {
+    	filmografia.get(idDir).remove(filmografia.get(idDir).indexOf(new Pelicula(idPel)));
     }
     
     /**
@@ -256,8 +239,8 @@ public class VideoclubRepository {
      * @param id the id
      * @param pelicula the pelicula
      */
-    public void putPelicula(String id, Pelicula pelicula) {
-    	peliculas.put(id, pelicula);
+    public void putPelicula(String idDir, Pelicula pelicula) {
+    	filmografia.get(idDir).add(pelicula);
     }
     
     /**
@@ -285,6 +268,10 @@ public class VideoclubRepository {
      * @param id the id
      */
     public void removeDirector(String id) {
+    	if (filmografia.get(id) != null) {
+    		filmografia.remove(id);
+    	}
+    	
     	directores.remove(id);
     }
     

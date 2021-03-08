@@ -27,24 +27,30 @@ public class PeliculaServiceController {
 	VideoclubRepository rep =new VideoclubRepository();
 	
 	/**
-	 * Gets the peliculas. Devuelve todas las películas
+	 * Gets the pelicula. Devuelve las películas de un director
 	 *
-	 * @return the peliculas
+	 * @param idDirector the id director
+	 * @return the response entity
 	 */
-	@GetMapping(value = "/pelicula")
-	public ResponseEntity<Object> getPeliculas(){
-		return new ResponseEntity<>(rep.getPeliculas(), HttpStatus.OK);
+	@GetMapping(value = "/director/{id}/pelicula")
+	public ResponseEntity<Object> getModelos(@PathVariable("id") String idDirector) {
+		if (rep.getDirector(idDirector) == null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+		}
+		return new ResponseEntity<>(rep.getFilmografia(idDirector), HttpStatus.OK);
 	}
-	
 	/**
 	 * Gets the pelicula. Devuelve la película con el id
 	 *
 	 * @param id the id
 	 * @return the pelicula
 	 */
-	@GetMapping(value = "/pelicula/{id}")
-	public ResponseEntity<Object> getPelicula(@PathVariable("id") String id) {
-		return new ResponseEntity<>(rep.getPelicula(id), HttpStatus.OK);
+	@GetMapping(value = "/director/{idDir}/pelicula/{idPel}")
+	public ResponseEntity<Object> getPelicula(@PathVariable("idDir") String idDirector, @PathVariable("idPel") String idPel) {
+		if (rep.getDirector(idDirector) == null) {
+			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
+		}
+		return new ResponseEntity<>(rep.getPelicula(idDirector, idPel), HttpStatus.OK);
 	}
 	
 	/**
@@ -53,13 +59,21 @@ public class PeliculaServiceController {
 	 * @param id the id
 	 * @return the response entity
 	 */
-	@DeleteMapping(value = "/pelicula/{id}")
-	public ResponseEntity<Object> deletePelicula(@PathVariable("id") String id) {
-		if (rep.getPelicula(id) == null) {
-			return new ResponseEntity<>("No existe esa pelicula", HttpStatus.OK);
+	@DeleteMapping(value = "director/{idDir}/pelicula/{idPel}")
+	public ResponseEntity<Object> deletePelicula(@PathVariable("idDir") String idDir, @PathVariable("idPel") String idPel) {
+		if (rep.getDirector(idDir) != null) {
+			if (rep.getPelicula(idDir,idPel) != null) {
+				rep.removePelicula(idDir,idPel);
+				return new ResponseEntity<>("Product is deleted successsfully", HttpStatus.NOT_ACCEPTABLE);
+				
+			} else {
+				return new ResponseEntity<>("No existe esa pelicula", HttpStatus.NOT_ACCEPTABLE);
+			}
 		}
-		rep.removePelicula(id);
-		return new ResponseEntity<>("Product is deleted successsfully", HttpStatus.OK);
+		return new ResponseEntity<>("No existe ese director", HttpStatus.OK);
+		
+		
+		
 		
 	
 	}
@@ -71,21 +85,28 @@ public class PeliculaServiceController {
 	 * @param pelicula the pelicula
 	 * @return the response entity
 	 */
-	@PutMapping(value = "/pelicula/{id}")
-	public ResponseEntity<Object> updatePelicula(@PathVariable("id") String id, @RequestBody Pelicula pelicula) {
-		if (rep.getPelicula(id).equals("")) {
+	@PutMapping(value = "director/{idDir}/pelicula/{idPel}")
+	public ResponseEntity<Object> updatePelicula(@PathVariable("idDir") String idDir, @PathVariable("idPel") String idPel, @RequestBody Pelicula pelicula) {
+		if (pelicula.getIdPelicula().equals("")) {
 			return new ResponseEntity<>("Rellene los datos", HttpStatus.OK);
 		}
-		if (rep.getDirector(pelicula.getDirector().getId()) == null) {
-			return new ResponseEntity<>("Esa pelicula no existe", HttpStatus.NOT_ACCEPTABLE);
+		if (rep.getDirector(idDir) != null) {
+			if (rep.getPelicula(idDir,idPel) != null) {
+				if (rep.getPlataforma((pelicula.getPlataforma().getId())) == null) {
+					return new ResponseEntity<>("Esa plataforma no existe", HttpStatus.NOT_ACCEPTABLE);
+				}
+				rep.removePelicula(idDir,idPel);
+				pelicula.setIdPelicula(idPel);
+				rep.putPelicula(idDir, pelicula);
+				return new ResponseEntity<>("Product is updated successsfully", HttpStatus.NOT_ACCEPTABLE);
+				
+			} else {
+				return new ResponseEntity<>("No existe esa pelicula", HttpStatus.NOT_ACCEPTABLE);
+			}
 		}
-		if (rep.getPlataforma((pelicula.getPlataforma().getId())) == null) {
-			return new ResponseEntity<>("Esa plataforma no existe", HttpStatus.NOT_ACCEPTABLE);
-		}
-		rep.removePelicula(id);
-		pelicula.setIdPelicula(id);
-		rep.putPelicula(id, pelicula);
-		return new ResponseEntity<>("Product is updated successsfully", HttpStatus.OK);
+		
+		return new ResponseEntity<>("No existe ese director", HttpStatus.OK);
+
 	}
 
 	/**
@@ -94,22 +115,31 @@ public class PeliculaServiceController {
 	 * @param pelicula the pelicula
 	 * @return the response entity
 	 */
-	@PostMapping(value = "/pelicula")
-	public ResponseEntity<Object> createPelicula(@RequestBody Pelicula pelicula) {
-		if  (VideoclubRepository.peliculas.containsKey(pelicula.getIdPelicula())) {
-			return new ResponseEntity<>("Esa pelicula ya existe", HttpStatus.NOT_ACCEPTABLE);
-		}  
-		if (pelicula.getIdPelicula().equals("")) {
-			return new ResponseEntity<>("Rellene los datos por favor", HttpStatus.NOT_ACCEPTABLE);
+	@PostMapping(value = "/director/{id}/pelicula")
+	public ResponseEntity<Object> createPelicula(@PathVariable("id") String id, @RequestBody Pelicula pelicula) {
+		if (rep.getDirector(id) != null) {
+			if (pelicula.getIdPelicula().equals("")) {
+				return new ResponseEntity<>("Rellene los datos por favor", HttpStatus.NOT_ACCEPTABLE);
+			}
+			if (rep.getPlataforma((pelicula.getPlataforma().getId())) == null) {
+				return new ResponseEntity<>("Esa plataforma no existe", HttpStatus.NOT_ACCEPTABLE);
+			}
+			for (Pelicula p : rep.getPeliculas(id)) {
+				if  (p.getIdPelicula().equals(pelicula.getIdPelicula())) {
+					return new ResponseEntity<>("Esa pelicula ya existe", HttpStatus.NOT_ACCEPTABLE);
+				}  
+			}
+			
+			rep.putPelicula(id, pelicula);
+			return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
 		}
-		if (rep.getDirector(pelicula.getDirector().getId()) == null) {
-			return new ResponseEntity<>("Esa pelicula no existe", HttpStatus.NOT_ACCEPTABLE);
+		
+		else {
+			return new ResponseEntity<>("Ese director no existe", HttpStatus.NOT_ACCEPTABLE);
 		}
-		if (rep.getPlataforma((pelicula.getPlataforma().getId())) == null) {
-			return new ResponseEntity<>("Esa plataforma no existe", HttpStatus.NOT_ACCEPTABLE);
-		}
-		rep.putPelicula(pelicula.getIdPelicula(), pelicula);
-		return new ResponseEntity<>("Product is created successfully", HttpStatus.CREATED);
+		
+		
+		
 	}
 	
 	/**
@@ -186,19 +216,6 @@ public class PeliculaServiceController {
 		
 	}
 	
-	/**
-	 * Gets the pelicula. Devuelve las películas de un director
-	 *
-	 * @param idDirector the id director
-	 * @return the response entity
-	 */
-	@GetMapping(value = "/director/{id}/pelicula")
-	public ResponseEntity<Object> getModelos(@PathVariable("id") String idDirector) {
-		if (rep.getDirector(idDirector) == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-		}
-		return new ResponseEntity<>(rep.getFilmografia(idDirector), HttpStatus.OK);
-	}
 	
 	/**
 	 * Gets the plataformas. Devuelve todas las plataformas
@@ -275,19 +292,7 @@ public class PeliculaServiceController {
 		
 		
 
-	/**
-	 * Gets the plataforma. Devuelve la plataforma de una película
-	 *
-	 * @param id the id 
-	 * @return the response entity
-	 */
-	@GetMapping(value = "/pelicula/{id}/plataforma")
-	public ResponseEntity<Object> getPlataformaPel(@PathVariable("id") String id) {
-		if (rep.getPelicula(id) == null) {
-			return new ResponseEntity<>(null, HttpStatus.NOT_ACCEPTABLE);
-		}
-		return new ResponseEntity<>(rep.getPelicula(id).getPlataforma(), HttpStatus.OK);
-	}
+
 	
 	
 
